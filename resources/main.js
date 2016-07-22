@@ -21,17 +21,8 @@
         Paused = false,
         TimeOutArray = [],
         IsFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1,
-    //Categories = ['Managerial', 'Quizzes', 'Fun Zone', 'Online Events', 'Paper Events', 'Technopolis',
-    //    'Design', 'Brain Storming', 'Future Builder', 'Mechnium', 'Design & Build', 'Code Conclave', 'ElectroVolt', 'Robotic Challenge'],
-    //Events = [[], [], [], [], [], [], [], [], [], [], [], []],
-    //Descriptions = [[], [], [], [], [], [], [], [], [], [], [], []],
-    //Rules = [[], [], [], [], [], [], [], [], [], [], [], []],
-    //DateOfEvent = [[], [], [], [], [], [], [], [], [], [], [], []],
-    //TimeOfEvent = [[], [], [], [], [], [], [], [], []],
-    //Venue = [[], [], [], [], [], [], [], [], [], [], [], []],
-    //Coordinator = [[], [], [], [], [], [], [], [], [], [], [], []],
-    //PhoneNumber = [[], [], [], [], [], [], [], [], [], [], [], []],
-        Categories = [],
+        Categories = ['Managerial', 'Quizzes', 'Fun Zone', 'Online Events', 'Paper Events', 'Technopolis',
+            'Design', 'Brain Storming', 'Future Builder', 'Mechnium', 'Design & Build', 'Code Conclave', 'ElectroVolt', 'Robotic Challenge'],
         Events = [],
         Descriptions = [],
         Rules = [],
@@ -1673,7 +1664,7 @@
                                 '<td class="Content"><div class="SmallDescription">' + SmallDescription + '</div><div class="DetailedContent">' +
                                 ((DescriptionsArray[j].length > 0) ? '<span class="ContentHeader">Description</span><hr><p>' + DescriptionsArray[j] + '</p>' : '') +
                                 ((Rules[i][j].length > 0) ? '<span class="ContentHeader">Rules</span><hr><p>' + Rules[i][j] + '</p>' : '') +
-                                    //((Venue[i][j].length > 0) ? '<span class="ContentHeader">Venue</span><hr><p>' + Venue[i][j] + ', ' + DateOfEvent[i][j] + ' ' + TimeOfEvent[i][j] + '</p>' : '') +
+                                //((Venue[i][j].length > 0) ? '<span class="ContentHeader">Venue</span><hr><p>' + Venue[i][j] + ', ' + DateOfEvent[i][j] + ' ' + TimeOfEvent[i][j] + '</p>' : '') +
                                 '<span class="ContentHeader">Venue</span><hr><p>To Be Announced Soon!</p>' +
                                 '</div></td></tr><tr><td class="ContactDetail">' + (Coordinator[i][j][0].length > 0 ? ('<span class="Left">' + Coordinator[i][j][0] + ' - ' + PhoneNumber[i][j][0]) + '</span>' : '') + (Coordinator[i][j][1].length > 0 ? ('<span class="Right">' + Coordinator[i][j][1] + ' - ' + PhoneNumber[i][j][1]) + '</span>' : '') + '</td></tr></tbody></table></div>')
                                 .appendTo(EventsFrame)
@@ -2278,25 +2269,25 @@
                     //    .Position(Width, Height, HalfWidth, HalfHeight);
                 }
             },
-            /**
-             * @return {number}
-             */
-            GetCategoryIndex: function (categoryName) {
-                var Index = Categories.indexOf(categoryName);
-                if (Index === -1) {
-                    Categories.push(categoryName);
-                    Events.push([]);
-                    Descriptions.push([]);
-                    Rules.push([]);
-                    DateOfEvent.push([]);
-                    TimeOfEvent.push([]);
-                    Venue.push([]);
-                    Coordinator.push([]);
-                    PhoneNumber.push([]);
-                    return Categories.length - 1;
-                } else return Index;
-            },
-            OnGetDataSuccess: function(){
+            // /**
+            //  * @return {number}
+            //  */
+            // GetCategoryIndex: function (categoryName) {
+            //     var Index = Categories.indexOf(categoryName);
+            //     if (Index === -1) {
+            //         Categories.push(categoryName);
+            //         Events.push([]);
+            //         Descriptions.push([]);
+            //         Rules.push([]);
+            //         DateOfEvent.push([]);
+            //         TimeOfEvent.push([]);
+            //         Venue.push([]);
+            //         Coordinator.push([]);
+            //         PhoneNumber.push([]);
+            //         return Categories.length - 1;
+            //     } else return Index;
+            // },
+            OnGetDataSuccess: function () {
                 Functions.LoadCategories().LoadEvents();
                 w.LoadingDone = true;
                 w.LoadingCallBack = function () {
@@ -2306,32 +2297,30 @@
                 };
             },
             GetData: function () {
-                Functions.OnGetDataSuccess();
-                //$.get({
-                //    url: 'http://manage.techspardha.org/events/',
-                //    success: function (data) {
-                //        if (data.length) {
-                //            var i = 0,
-                //                l = data.length,
-                //                category,
-                //                event;
-                //            for (; i < l; i++) {
-                //                event = data[i];
-                //                category = Functions.GetCategoryIndex(event.category);
-                //                Events[category].push(event.nameOfEvent);
-                //                Descriptions[category].push(event.description.replace(/<(?!\/?[pa](?=>|\s.*>))\/?.*?>/g, '').replace('&nbsp;', ''));
-                //                Rules[category].push(event.rules.replace(/<(?!\/?[pa](?=>|\s.*>))\/?.*?>/g, '').replace('&nbsp;', ''));
-                //                Venue[category].push(event.venue);
-                //                Coordinator[category].push([event.coordinator_1, event.coordinator_2]);
-                //                PhoneNumber[category].push([event.phoneno_1, event.phoneno_2]);
-                //                DateOfEvent[category].push(event.dateOfEvent);
-                //                TimeOfEvent[category].push(event.timeOfEvent);
-                //            }
-                //            Functions.OnGetDataSuccess();
-                //        }
-                //    },
-                //    error: Functions.GetData
-                //});
+                var i = 0,
+                    j,
+                    l = Categories.length;
+                for (; i < l; i++) {
+                    Events.push([]);
+                    Descriptions.push([]);
+                    Rules.push([]);
+                    Venue.push([]);
+                    Coordinator.push([]);
+                    PhoneNumber.push([]);
+                    DateOfEvent.push([]);
+                    TimeOfEvent.push([]);
+                    for (j = 0; j < 5; j++) {
+                        Events[i].push('Event ' + (j + 1));
+                        Descriptions[i].push('This is just a demo description.');
+                        Rules[i].push('This is just a demo rule.');
+                        Venue[i].push('Demo Hall');
+                        Coordinator[i].push(['Coordinator One', 'Coordinator Two']);
+                        PhoneNumber[i].push(['91-9999999999', '91-8888888888']);
+                        DateOfEvent[i].push('21/02/1996');
+                        TimeOfEvent[i].push('7:00 PM');
+                    }
+                }
+                setTimeout(Functions.OnGetDataSuccess, 4000);
             },
             //GetData: function () {
             //    var i = 0,
